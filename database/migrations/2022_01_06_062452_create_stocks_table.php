@@ -15,10 +15,10 @@ class CreateStocksTable extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
-            $table->integer('item_id');
+            $table->unsignedBigInteger('item_id');
             $table->enum('type',['in','out']);
             $table->string('description');
-            $table->integer('supplier_id');
+            $table->unsignedBigInteger('supplier_id');
             $table->integer('qty');
             $table->timestamps();
 
