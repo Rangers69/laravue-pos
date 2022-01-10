@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('header','Customer')
+@section('header','Supplier')
 
 @section('css')
     <!-- dataTables -->
@@ -14,7 +14,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <a href="#" @click="addData()" class="btn btn-sm btn-primary pull-right">Create New Customer</a>
+                    <a href="#" @click="addData()" class="btn btn-sm btn-primary pull-right">Create New Supplier</a>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -23,6 +23,7 @@
                             <tr>
                                 <th style="width: 10px">#</th>
                                 <th>Name</th>
+                                <th>Email</th>
                                 <th>Phone Number</th>
                                 <th>Address</th>
                                 <th class="text-center" style="width: 150px">Action</th>
@@ -40,7 +41,7 @@
                 <div class="modal-content">
                     <form method="post" :action="actionUrl" autocomplete="off" @submit="submitForm($event,data.id)">
                         <div class="modal-header">
-                            <h4 class="modal-title">Customer</h4>
+                            <h4 class="modal-title">Supplier</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -51,6 +52,10 @@
                             <div class="form-group">
                                 <label>Name</label>
                                 <input type="text" class="form-control" name="name" :value="data.name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="text" class="form-control" name="email" :value="data.email" required>
                             </div>
                             <div class="form-group">
                                 <label>Phone</label>
@@ -91,12 +96,13 @@
 <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
 <script type="text/javascript">
-     var actionUrl = '{{ url('customers') }}';
-    var apiUrl  = '{{url('api/customers')}}';
+     var actionUrl = '{{ url('suppliers') }}';
+    var apiUrl  = '{{url('api/suppliers')}}';
 
     var columns = [
         {data:'DT_RowIndex',class:'text-center',orderable:true},
         {data:'name',class:'text-center',orderable:true},
+        {data:'email',class:'text-center',orderable:true},
         {data:'phone_number',class:'text-center',orderable:true},
         {data:'address',class:'text-center',orderable:true},
         {render: function(index,row,data,meta) {

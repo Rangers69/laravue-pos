@@ -14,9 +14,17 @@ class CategorieController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.categorie.index');
     }
 
+    public function api() 
+    {
+        $categories = Categorie::all();
+        $datatables = datatables()->of($categories)->addIndexColumn();
+
+        return $datatables->make(true);
+        
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -35,7 +43,14 @@ class CategorieController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $this->validate($request,[
+            'name' => ['required'],
+        ]);
+
+        Categorie::create($request->all());
+
+        return redirect('categories')->with('success','success create new categories');
     }
 
     /**
@@ -69,7 +84,14 @@ class CategorieController extends Controller
      */
     public function update(Request $request, Categorie $categorie)
     {
-        //
+
+        $this->validate($request,[
+            'name' => ['required']
+        ]);
+
+        $categorie->update($request->all());
+
+        return redirect('categories')->with('success','Categorie updated');
     }
 
     /**
@@ -80,6 +102,6 @@ class CategorieController extends Controller
      */
     public function destroy(Categorie $categorie)
     {
-        //
+       $categorie->delete();
     }
 }

@@ -14,12 +14,26 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index']);
 
 
 Route::resource('/customers', App\Http\Controllers\CustomerController::class); 
+Route::get('/api/customers', [App\Http\Controllers\CustomerController::class, 'api']);
+
+Route::resource('/suppliers', App\Http\Controllers\SupplierController::class); 
+Route::get('/api/suppliers', [App\Http\Controllers\SupplierController::class, 'api']);
+
+Route::resource('/categories', App\Http\Controllers\CategorieController::class); 
+Route::get('/api/categories', [App\Http\Controllers\CategorieController::class, 'api']);
+
+Route::resource('/units', App\Http\Controllers\UnitController::class); 
+Route::get('/api/units', [App\Http\Controllers\UnitController::class, 'api']);
+
+// Route::resource('/items', App\Http\Controllers\ItemController::class); 
+// Route::get('/api/items', [App\Http\Controllers\ItemController::class, 'api']);

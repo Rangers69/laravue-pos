@@ -14,7 +14,17 @@ class UnitController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.unit.index');
+    }
+
+    public function api() 
+    {
+        $units = Unit::all();
+        $datatables = datatables()->of($units)->addIndexColumn();
+
+        return $datatables->make(true);
+
+
     }
 
     /**
@@ -35,7 +45,13 @@ class UnitController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'name' => ['required'],
+        ]);
+
+        Unit::create($request->all());
+
+        return redirect('units')->with('success','success create new unit');
     }
 
     /**
@@ -69,7 +85,13 @@ class UnitController extends Controller
      */
     public function update(Request $request, Unit $unit)
     {
-        //
+        $this->validate($request,[
+            'name' => ['required'],
+        ]);
+
+        $unit->update($request->all());
+
+        return redirect('units')->with('success','Unit updated');
     }
 
     /**
@@ -80,6 +102,6 @@ class UnitController extends Controller
      */
     public function destroy(Unit $unit)
     {
-        //
+        $unit->delete();
     }
 }

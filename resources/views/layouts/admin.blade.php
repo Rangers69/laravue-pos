@@ -120,7 +120,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{url('dashboard')}}" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -128,7 +128,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{url('suppliers')}}" class="nav-link">
                                 <i class="fas fa-truck"></i>
                                 &nbsp;
                                 <p>
@@ -156,19 +156,19 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{url('categories')}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Categori</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{url('items')}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Item</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{url('units')}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Unit</p>
                                     </a>
@@ -221,12 +221,12 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Dashboard</h1>
+                            <h1 class="m-0">@yield('header')</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Dashboard</li>
+                                <li class="breadcrumb-item active">@yield('header')</li>
                             </ol>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
@@ -255,7 +255,7 @@
             <strong>Copyright &copy; 2021 - 2022 </strong>
             All rights reserved.
             <div class="float-right d-none d-sm-inline-block">
-                <b>Built with <i class="far fa-heart"></i></b>
+                <b>Built with <i class="fas fa-heart" style="color:#ff69b4;"></i></b>
             </div>
         </footer>
     </div>
@@ -277,7 +277,6 @@
     <!-- AdminLTE App -->
     <script src="{{asset('assets/dist/js/adminlte.js')}}"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="dist/js/pages/dashboard2.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     @yield('js')

@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+@section('header','Dashboard')
 
 @section('content')
 <div class="row">
@@ -9,7 +10,7 @@
               <div class="info-box-content">
                 <span class="info-box-text">Supplier</span>
                 <span class="info-box-number">
-                  10
+                {{$all_suppliers}}
                 </span>
               </div>
               <!-- /.info-box-content -->
@@ -53,7 +54,7 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Customer</span>
-                <span class="info-box-number">2,000</span>
+                <span class="info-box-number">{{$all_customers}}</span>
               </div>
               <!-- /.info-box-content -->
             </div>

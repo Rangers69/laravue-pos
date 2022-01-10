@@ -19,9 +19,18 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::all();
 
-        return view('admin.customer.index',compact('customers'));
+        return view('admin.customer.index');
+    }
+
+    public function api() 
+    {
+        $customers = Customer::all();
+        $datatables = datatables()->of($customers)->addIndexColumn();
+
+        return $datatables->make(true);
+
+
     }
 
     /**
@@ -84,7 +93,15 @@ class CustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
-        //
+        $this->validate($request,[
+            'name' => ['required'],
+            'phone_number' => ['required'],
+            'address' => ['required']
+        ]);
+
+        $customer->update($request->all());
+
+        return redirect('customers')->with('success','Customer updated');
     }
 
     /**
@@ -95,6 +112,6 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        //
+        $customer->delete();
     }
 }
