@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Categorie;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
-class CategorieController extends Controller
+class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,17 +19,19 @@ class CategorieController extends Controller
      */
     public function index()
     {
-        return view('admin.categorie.index');
+        return view('admin.category.index');
     }
 
     public function api() 
     {
-        $categories = Categorie::all();
+        $categories = Category::all();
         $datatables = datatables()->of($categories)->addIndexColumn();
 
         return $datatables->make(true);
-        
+
+
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -48,18 +55,18 @@ class CategorieController extends Controller
             'name' => ['required'],
         ]);
 
-        Categorie::create($request->all());
+        Category::create($request->all());
 
-        return redirect('categories')->with('success','success create new categories');
+        return redirect('categories')->with('success','success create new category');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Categorie  $categorie
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Categorie $categorie)
+    public function show(Category $category)
     {
         //
     }
@@ -67,10 +74,10 @@ class CategorieController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Categorie  $categorie
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Categorie $categorie)
+    public function edit(Category $category)
     {
         //
     }
@@ -79,29 +86,28 @@ class CategorieController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Categorie  $categorie
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Categorie $categorie)
+    public function update(Request $request, Category $category)
     {
-
         $this->validate($request,[
-            'name' => ['required']
+            'name' => ['required'],
         ]);
 
-        $categorie->update($request->all());
+        $category->update($request->all());
 
-        return redirect('categories')->with('success','Categorie updated');
+        return redirect('categories')->with('success','Category updated');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Categorie  $categorie
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Categorie $categorie)
+    public function destroy(Category $category)
     {
-       $categorie->delete();
+        $category->delete();
     }
 }

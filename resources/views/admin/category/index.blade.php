@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('header','Categorie')
+@section('header','Category')
 
 @section('css')
     <!-- dataTables -->
@@ -14,7 +14,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <a href="#" @click="addData()" class="btn btn-sm btn-primary pull-right">Create New Categorie</a>
+                    <a href="#" @click="addData()" class="btn btn-sm btn-primary pull-right">Create New Category</a>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -38,7 +38,7 @@
                 <div class="modal-content">
                     <form method="post" :action="actionUrl" autocomplete="off" @submit="submitForm($event,data.id)">
                         <div class="modal-header">
-                            <h4 class="modal-title">Categorie</h4>
+                            <h4 class="modal-title">Category</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>

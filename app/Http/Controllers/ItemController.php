@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +19,19 @@ class ItemController extends Controller
      */
     public function index()
     {
-        return 'asas';
+        $categories = Category::all();
+        return view('admin.item.index', compact('categories'));
+    }
+
+    public function api() 
+    {
+        $items = Item::all();
+        
+        $datatables = datatables()->of($items)->addIndexColumn();
+
+        return $datatables->make(true);
+
+
     }
 
     /**
@@ -35,7 +52,18 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'barcode' => ['required'],
+            'name' => ['required'],
+            'categorie_id' => ['required'],
+            'unit_id' => ['required'],
+            'price' => ['required'],
+            'stock' => ['required'],
+        ]);
+
+        Customer::create($request->all());
+
+        return redirect('customers')->with('success','success create new customer');
     }
 
     /**
