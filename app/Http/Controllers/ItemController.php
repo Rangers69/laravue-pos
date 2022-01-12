@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\Unit;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -20,17 +21,15 @@ class ItemController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return view('admin.item.index', compact('categories'));
+        $units = Unit::all();
+        return view('admin.item.index', compact('categories','units'));
     }
 
     public function api() 
     {
+
         $items = Item::all();
-        
-        $datatables = datatables()->of($items)->addIndexColumn();
-
-        return $datatables->make(true);
-
+        return json_encode($items);
 
     }
 
@@ -55,15 +54,14 @@ class ItemController extends Controller
         $this->validate($request,[
             'barcode' => ['required'],
             'name' => ['required'],
-            'categorie_id' => ['required'],
+            'category_id' => ['required'],
             'unit_id' => ['required'],
             'price' => ['required'],
-            'stock' => ['required'],
+            'stock' => ['required']
         ]);
 
-        Customer::create($request->all());
-
-        return redirect('customers')->with('success','success create new customer');
+        Item::create($request->all());
+        return redirect('items')->with('success','success create new item');
     }
 
     /**
@@ -97,7 +95,18 @@ class ItemController extends Controller
      */
     public function update(Request $request, Item $item)
     {
-        //
+        $this->validate($request,[
+            'barcode' => ['required'],
+            'name' => ['required'],
+            'category_id' => ['required'],
+            'unit_id' => ['required'],
+            'price' => ['required'],
+            'stock' => ['required']
+        ]);
+
+        $item->update($request->all());
+
+        return redirect('items')->with('success','Item updated');
     }
 
     /**
@@ -108,6 +117,6 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
-        //
+        $item->delete();
     }
 }

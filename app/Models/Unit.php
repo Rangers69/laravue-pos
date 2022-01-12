@@ -13,4 +13,9 @@ class Unit extends Model
     [
         'name'
     ];
+
+    public function items()
+    {
+        return $this->hasMany('App\Models\Item','item_id');
+    }
 }

@@ -17,13 +17,13 @@ class CreateItemsTable extends Migration
             $table->id();
             $table->string('barcode',64);
             $table->string('name', 64);
-            $table->unsignedBigInteger('categorie_id');
+            $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('unit_id');
             $table->integer('price');
             $table->integer('stock');
             $table->timestamps();
 
-            $table->foreign('categorie_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('unit_id')->references('id')->on('units')->onDelete('cascade');
         });
     }
