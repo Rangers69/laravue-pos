@@ -187,15 +187,9 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{url('stocks')}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Stock In</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Stock out</p>
+                                        <p>Stock (In/Out)</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">

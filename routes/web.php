@@ -37,3 +37,6 @@ Route::get('/api/units', [App\Http\Controllers\UnitController::class, 'api']);
 
 Route::resource('/items', App\Http\Controllers\ItemController::class); 
 Route::get('/api/items', [App\Http\Controllers\ItemController::class, 'api']);
+
+Route::resource('/stocks', App\Http\Controllers\StockController::class); 
+Route::get('/api/stocks', [App\Http\Controllers\StockController::class, 'api']);

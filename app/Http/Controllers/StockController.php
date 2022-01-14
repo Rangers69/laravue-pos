@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Supplier;
+use App\Models\Item;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 
@@ -18,7 +20,44 @@ class StockController extends Controller
      */
     public function index()
     {
-        //
+        $stocks = Stock::all();
+        $suppliers = Supplier::all();
+        $items = Item::all();
+        return view('admin.stock.index',compact('items','suppliers','stocks'));
+    }
+
+    public function api() 
+    {
+
+        $stocks = Stock::select('stocks.*', 'items.name as name_item','barcode','suppliers.name')
+                        ->leftjoin('items', 'stocks.item_id','items.id')
+                        ->leftjoin('suppliers', 'stocks.supplier_id','suppliers.id')
+                        ->get();
+
+        // $suppliers = Supplier::all();
+        // $items = Item::all();
+
+
+        $datatables = datatables()->of($stocks)
+        ->addColumn('item', function($stock){
+            return ($stock->barcode);
+        })
+        ->addColumn('supplier', function($supplier){
+            if($supplier->name == NULL){
+                return '---';
+            } else {
+            return ($supplier->name);
+            }
+        })
+        ->addColumn('name', function($item){
+            return ($item->name_item);
+        })
+        ->addColumn('date', function($stock){
+            return convertDate($stock->created_at);
+        })
+        ->addIndexColumn();
+
+        return $datatables->make(true);
     }
 
     /**
@@ -39,7 +78,25 @@ class StockController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'item_id' => ['required'],
+            'type' => ['required'],
+            'description' => ['required'],
+            'supplier_id' => ['nullable'],
+            'qty' => ['required']
+        ]);
+
+        if($request->type == 'in'){
+            
+            Stock::create($request->all());
+            Item::where('id', $request->item_id)->increment('stock', $request->qty);
+            
+        } else {
+            
+            Stock::create($request->all());
+            Item::where('id', $request->item_id)->decrement('stock', $request->qty);
+        }
+        
     }
 
     /**
@@ -73,7 +130,15 @@ class StockController extends Controller
      */
     public function update(Request $request, Stock $stock)
     {
-        //
+        $this->validate($request,[
+            'item_id' => ['required'],
+            'type' => ['required'],
+            'description' => ['required'],
+            'supplier_id' => ['nullable'],
+            'qty' => ['required']
+        ]);
+
+        $stock->update($request->all());
     }
 
     /**
@@ -84,6 +149,14 @@ class StockController extends Controller
      */
     public function destroy(Stock $stock)
     {
-        //
+
+        if($stock->type == 'in'){
+            $stock->delete();
+            Item::where('id', $stock->item_id)->decrement('stock', $stock->qty);
+            
+        } else {
+            $stock->delete();
+            Item::where('id', $stock->item_id)->increment('stock', $stock->qty);
+        }
     }
 }

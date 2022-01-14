@@ -18,7 +18,7 @@ class CreateStocksTable extends Migration
             $table->unsignedBigInteger('item_id');
             $table->enum('type',['in','out']);
             $table->string('description');
-            $table->unsignedBigInteger('supplier_id');
+            $table->unsignedBigInteger('supplier_id')->nullable();
             $table->integer('qty');
             $table->timestamps();
 
