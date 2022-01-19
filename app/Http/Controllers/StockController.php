@@ -26,16 +26,21 @@ class StockController extends Controller
         return view('admin.stock.index',compact('items','suppliers','stocks'));
     }
 
-    public function api() 
+    public function api(Request $request) 
     {
 
         $stocks = Stock::select('stocks.*', 'items.name as name_item','barcode','suppliers.name')
-                        ->leftjoin('items', 'stocks.item_id','items.id')
-                        ->leftjoin('suppliers', 'stocks.supplier_id','suppliers.id')
+                        ->join('items', 'stocks.item_id','items.id')
+                        ->join('suppliers', 'stocks.supplier_id','suppliers.id')
                         ->get();
 
-        // $suppliers = Supplier::all();
-        // $items = Item::all();
+        if ($request->type == 'in' || $request->type == 'out'){
+            $stocks = $stocks->where('type', $request->type);
+        }
+
+        if ($request->created_at){
+            $stocks = $stocks->where('created_at', $request->created_at);
+        }
 
 
         $datatables = datatables()->of($stocks)
@@ -85,15 +90,12 @@ class StockController extends Controller
             'supplier_id' => ['nullable'],
             'qty' => ['required']
         ]);
+        Stock::create($request->all());
 
         if($request->type == 'in'){
-            
-            Stock::create($request->all());
             Item::where('id', $request->item_id)->increment('stock', $request->qty);
             
         } else {
-            
-            Stock::create($request->all());
             Item::where('id', $request->item_id)->decrement('stock', $request->qty);
         }
         

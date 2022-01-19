@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +20,32 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        //
+        $transactions = Transaction::select('transactions.*', 'customers.name')
+        ->leftjoin('customers', 'transactions.customer_id','customers.id')
+        ->get();
+
+        return view('admin.transaction.index', compact('transactions'));
+    }
+
+    public function api(Request $request)
+    {
+        $search = $request->search;
+
+        if($search == ''){
+            $items = Customer::orderby('name','asc')->select('id','name')->limit(5)->get();
+        }else{
+            $items = Customer::orderby('name','asc')->select('id','name')->where('name', 'like', '%' .$search . '%')->limit(5)->get();
+        }
+
+        $response = array();
+        foreach($items as $item){
+            $response[] = array(
+                "label"=>$item->name,
+                "id"=>$item->id
+            );
+        }
+
+        return response()->json($response);
     }
 
     /**
@@ -24,7 +55,8 @@ class TransactionController extends Controller
      */
     public function create()
     {
-        //
+        $customers = Customer::all();
+        return view('admin.transaction.create',compact('customers'));
     }
 
     /**
@@ -35,7 +67,13 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'customer_id' => ['required'],
+        ]);
+
+        Transaction::create($request->all());
+
+        return redirect('transactions')->with('success','success create new order');
     }
 
     /**
@@ -80,6 +118,7 @@ class TransactionController extends Controller
      */
     public function destroy(Transaction $transaction)
     {
-        //
+        $transaction->delete();
+        return redirect('transactions')->with('success','Data has been deleted');
     }
 }

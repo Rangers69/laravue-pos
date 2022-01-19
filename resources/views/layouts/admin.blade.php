@@ -120,7 +120,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <li class="nav-item">
-                            <a href="{{url('dashboard')}}" class="nav-link">
+                            <a href="{{url('dashboard')}}" class="nav-link {{request()->is('dashboard') ? 'active' : ''}}">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -128,7 +128,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{url('suppliers')}}" class="nav-link">
+                            <a href="{{url('suppliers')}}" class="nav-link {{request()->is('suppliers') ? 'active' : ''}}">
                                 <i class="fas fa-truck"></i>
                                 &nbsp;
                                 <p>
@@ -137,7 +137,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{url('customers')}}" class="nav-link">
+                            <a href="{{url('customers')}}" class="nav-link {{request()->is('customers') ? 'active' : ''}}">
                                 <i class="fas fa-users"></i>
                                 &nbsp;
                                 <p>
@@ -156,19 +156,19 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{url('categories')}}" class="nav-link">
+                                    <a href="{{url('categories')}}" class="nav-link {{request()->is('categories') ? 'active' : ''}}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Categori</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{url('items')}}" class="nav-link">
+                                    <a href="{{url('items')}}" class="nav-link {{request()->is('items') ? 'active' : ''}}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Item</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{url('units')}}" class="nav-link">
+                                    <a href="{{url('units')}}" class="nav-link {{request()->is('units') ? 'active' : ''}}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Unit</p>
                                     </a>
@@ -187,18 +187,23 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{url('stocks')}}" class="nav-link">
+                                    <a href="{{url('stocks')}}" class="nav-link {{request()->is('stocks') ? 'active' : ''}}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Stock (In/Out)</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{url('transactions')}}" class="nav-link {{request()->is('transactions') ? 'active' : ''}}">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Sales</p>
+                                        <p>Customer Order</p>
                                     </a>
                                 </li>
-
+                                <!-- <li class="nav-item">
+                                    <a href="{{url('transactionDetails')}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>List Order</p>
+                                    </a>
+                                </li> -->
                             </ul>
                         </li>
                     </ul>
@@ -273,6 +278,11 @@
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!-- for live -->
+    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     @yield('js')
 
 </body>

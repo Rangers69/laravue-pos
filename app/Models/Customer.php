@@ -15,4 +15,6 @@ class Customer extends Model
         'phone_number',
         'address'
     ];
+
+   
 }

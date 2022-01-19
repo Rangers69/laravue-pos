@@ -15,6 +15,21 @@
             <div class="card">
                 <div class="card-header">
                     <a href="#" @click="addData()" class="btn btn-sm btn-primary pull-right">Add New Stock</a>
+                    <div class="col-md-2 float-md-right">
+                            <select name="type" class="form-control">
+                                <option value="99">Type</option>
+                                <option value="in">In</option>
+                                <option value="out">Out</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 float-md-right">
+                            <div class='input-group date' id='datetimepicker'>
+                                <input type='date' class="form-control" name="date">
+                                <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -138,4 +153,20 @@
     ];
 </script>
 <script src="{{asset('js/data.js')}}"></script>
+<script>
+    $('select[name=type]').on('change', function() {
+        type = $('select[name=type]').val()
+        if (type == 99) {
+            controller.table.ajax.url(apiUrl).load()
+        } else {
+            controller.table.ajax.url(apiUrl + '?type=' + type).load()
+        }
+    })
+
+    $('input[name=date]').on('change', function() {
+    created_at = $('input[name=date]').val()
+    controller.table.ajax.url(apiUrl + '?created_at=' + created_at).load()
+    })
+
+</script>
 @endsection

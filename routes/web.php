@@ -40,3 +40,9 @@ Route::get('/api/items', [App\Http\Controllers\ItemController::class, 'api']);
 
 Route::resource('/stocks', App\Http\Controllers\StockController::class); 
 Route::get('/api/stocks', [App\Http\Controllers\StockController::class, 'api']);
+
+Route::resource('/transactions', App\Http\Controllers\TransactionController::class); 
+Route::get('/api/transactions', [App\Http\Controllers\TransactionController::class, 'api']);
+
+Route::resource('/transactionDetails', App\Http\Controllers\TransactionDetailController::class); 
+Route::get('/api/transactionDetails', [App\Http\Controllers\TransactionDetailController::class, 'api']);
