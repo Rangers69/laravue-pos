@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Transaction;
 use App\Models\TransactionDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TransactionDetailController extends Controller
 {
@@ -23,7 +24,7 @@ class TransactionDetailController extends Controller
     public function index(Request $request)
     {
 
-        $orderlist = TransactionDetail::select('transaction_details.*', 'items.name','transactions.customer_id','customers.name')
+        $orderlist = TransactionDetail::select('transaction_details.*', 'items.name','transactions.customer_id','customers.name',DB::raw('( transaction_details.qty * items.price) as total'))
         ->join('items', 'transaction_details.item_id','items.id')
         ->join('transactions', 'transaction_details.transaction_id','transactions.id')
         ->join('customers','customers.id', 'transactions.customer_id')

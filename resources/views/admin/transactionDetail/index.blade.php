@@ -15,11 +15,11 @@
     <!-- form start -->
     <form class="form-horizontal" action="{{ url('transactionDetails') }}" method="post">
         @csrf
-        <div class="card-body">
-            <input type="hidden" name="transaction_id" value="{{$request->transaction_id}}">
+        <div class="card-body" id="hitung">
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Nama Produk</label>
                 <div class="col-sm-10">
+                    <input type="hidden"  name="transaction_id" value="{{$request->transaction_id}}">
                 <input type="text" name="name" class="form-control" id="product"
 				placeholder="Masukan nama barang" autocomplete="off">
                 <input type="hidden" name="item_id" id="item_id">
@@ -28,7 +28,7 @@
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Qty</label>
                 <div class="col-sm-10">
-                    <input type="text" name="qty" class="form-control">
+                    <input type="text" name="qty" id="qty" class="form-control">
                 </div>
             </div>
             <div class="form-group row">
@@ -76,7 +76,7 @@
                         <td>{{$order->customer->name}}</td>
                         <td>{{$order->item->name}}</td>
                         <td>{{$order->qty}}</td>
-                        <td>{{$order->total_price}}</td>
+                        <td>Rp {{ @format_uang($order->total)}}</td>
                         <td>
                             <div class="row justify-content-center">
                                 <a href="" class="btn btn-warning btn-sm">Detail</a>
@@ -139,5 +139,11 @@
      });
 
    });
+
+   
+   numberWithTitik(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
    </script>
 @endsection
