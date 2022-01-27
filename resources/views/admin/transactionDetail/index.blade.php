@@ -70,7 +70,8 @@
                             <th style="width: 25%">Action</th>
                         </tr>
                     </thead>
-                    @foreach($orderlist as $key => $order)
+                    
+                    @foreach($orderlist as $key => $order) 
                     <tr>
                         <td>{{$key+1}}</td>
                         <td>{{$order->customer->name}}</td>
@@ -96,7 +97,7 @@
                             <div class="row">
                                 <tr>
                                     <td colspan="4"><strong>Total:</strong></td>
-                                    <td class="text-center"><strong>Rp100.000,-</strong></td>
+                                    <td class="text-center"><strong>Rp {{@format_uang($total)}},-</strong></td>
                                     <td></td>
                                 </tr>
                             </div>

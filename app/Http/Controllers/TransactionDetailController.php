@@ -31,11 +31,16 @@ class TransactionDetailController extends Controller
         ->where('transactions.id',$request->transaction_id)
         ->get();
 
+        $total = 0;
+        foreach ($orderlist as $key => $order){
+            $total = $order->total + $total;
+        }
+
         $items = Item::all();
         $customers = Customer::all();
 
 
-        return view('admin.transactionDetail.index', compact('request','orderlist','items','customers'));
+        return view('admin.transactionDetail.index', compact('request','orderlist','items','customers','total'));
     }
 
     public function api(Request $request) 
