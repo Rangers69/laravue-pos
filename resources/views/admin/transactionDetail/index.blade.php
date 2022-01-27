@@ -28,13 +28,13 @@
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Qty</label>
                 <div class="col-sm-10">
-                    <input type="text" name="qty" id="qty" class="form-control">
+                    <input type="text" name="qty" id="qty" class="form-control" autocomplete="off">
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Price</label>
                 <div class="col-sm-10">
-                    <input type="text" id="price" name="total_price" class="form-control">
+                    <input type="text" id="price" name="total_price" class="form-control" autocomplete="off">
                 </div>
             </div>
         </div>
@@ -79,7 +79,7 @@
                         <td>Rp {{ @format_uang($order->total)}}</td>
                         <td>
                             <div class="row justify-content-center">
-                                <a href="" class="btn btn-warning btn-sm">Detail</a>
+                                <!-- <a href="" class="btn btn-warning btn-sm">Detail</a> -->
                                 &nbsp;
                                 <form action="{{ url('transactionDetails', ['id' => $order->id]) }}" method="post">
                                     <input type="submit" class="btn btn-danger btn-sm" value="Delete"
@@ -92,6 +92,15 @@
                     </tr>
                     @endforeach
                     <tbody>
+                        <div class="col-lg">
+                            <div class="row">
+                                <tr>
+                                    <td colspan="4"><strong>Total:</strong></td>
+                                    <td class="text-center"><strong>Rp100.000,-</strong></td>
+                                    <td></td>
+                                </tr>
+                            </div>
+                        </div>
                     </tbody>
                 </table>
             </div>
