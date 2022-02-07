@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Transaction;
+use App\Models\TransactionDetail;
 use App\Models\Category;
 use App\Models\Item;
 use App\Models\Supplier;
@@ -20,11 +21,20 @@ class DashboardController extends Controller
 
     public function index()
     {
+        
+        $label_laku = Item::orderBy('item_id')->join('transaction_details', 'transaction_details.item_id', 'items.id')->groupBy('items.name')->limit(5)->pluck('items.name');
+
+        $data_laku = TransactionDetail::select(DB::raw("SUM(qty) as total"))->groupBy('item_id')->limit(5)->orderBy('item_id')->pluck('total');
+
+        // return $data_laku;
+        
+
         $all_categories = Category::count();
         $all_suppliers = Supplier::count();
         $all_customers = Customer::count();
         $all_items = Item::count();
-
+        
+        
         $label_donut = Category::orderBy('category_id')->join('items', 'items.category_id', 'categories.id')->groupBy('categories.name')->pluck('categories.name');
         $data_donut = Item::select(DB::raw("COUNT(category_id) as total"))->groupBy('category_id')->orderBy('category_id')->pluck('total');
 
@@ -42,8 +52,8 @@ class DashboardController extends Controller
 
             $data_bar[$key]['data'] = $data_month;
         }
-        // return $data_month;
 
-        return view('admin.dashboard', compact('all_suppliers','all_customers','all_items','all_categories','label_donut','data_donut','data_bar'));
+        // return $data_month;
+        return view('admin.dashboard', compact('all_suppliers','all_customers','all_items','all_categories','label_donut','data_donut','data_bar','label_laku','data_laku'));
     }
 }
