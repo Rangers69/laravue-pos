@@ -21,7 +21,7 @@ class CreateTransactionDetailsTable extends Migration
             $table->integer('total_price');
             $table->timestamps();
 
-            $table->foreign('item_id')->references('id')->on('items')->onDelete('no action');
+            $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
             $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
         });
     }

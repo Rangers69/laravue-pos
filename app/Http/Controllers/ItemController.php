@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Unit;
 use App\Models\Category;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
@@ -22,13 +23,27 @@ class ItemController extends Controller
     {
         $categories = Category::all();
         $units = Unit::all();
-        return view('admin.item.index', compact('categories','units'));
+
+        $now = Carbon::now();
+        $thBln = $now->year.$now->month;
+        
+        $cek = Item::count();
+        if ($cek == 0) {
+            $urut = 1001;
+            $nomor = 'PI'.$thBln.$urut;
+        }else {
+            $ambil = Item::all()->last();
+            $urut = (int)substr($ambil->barcode, -4) + 1;
+            $nomor = 'PI'.$thBln.$urut;
+        }
+
+        return view('admin.item.index', compact('categories','units','nomor'));
     }
 
     public function api() 
     {
-
         $items = Item::all();
+
         return json_encode($items);
 
     }
