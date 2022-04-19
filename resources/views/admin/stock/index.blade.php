@@ -37,7 +37,7 @@
                         <thead>
                             <tr>
                                 <th style="width: 10px">#</th>
-                                <th>Barcode</th>
+                                <th>Purchase Order</th>
                                 <th>Name</th>
                                 <th>Type</th>
                                 <th>Description</th>
@@ -67,6 +67,10 @@
                         <div class="modal-body">
                             @csrf
                             <input type="hidden" name="_method" value="PUT" v-if="editStatus">
+                            <div class="form-group" v-if="editStatus == false">
+                                <label>Purchase Order</label>
+                                <input type="text" class="form-control" name="purchase_order" value="{{$nomor}}" readonly required>
+                            </div>
                             <div class="form-group">
                                 <label>Item</label>
                                 <select name="item_id" class="form-control">
@@ -137,7 +141,7 @@
 
     var columns = [
         {data:'DT_RowIndex',class:'text-center',orderable:true},
-        {data:'item',class:'text-center',orderable:true},
+        {data:'purchase_order',class:'text-center',orderable:true},
         {data:'name_item',class:'text-center',orderable:true},
         {data:'type',class:'text-center',orderable:true},
         {data:'description',class:'text-center',orderable:true},

@@ -195,7 +195,7 @@
                                 <li class="nav-item">
                                     <a href="{{url('transactions')}}" class="nav-link {{request()->is('transactions') ? 'active' : ''}}">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Customer Order</p>
+                                        <p>Sales Order</p>
                                     </a>
                                 </li>
                                 <!-- <li class="nav-item">

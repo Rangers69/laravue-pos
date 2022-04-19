@@ -19,9 +19,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index']);
 
+// Route::resource('/payment', App\Http\Controllers\PaymentController::class); 
+Route::post('/payment', [App\Http\Controllers\PaymentController::class, 'index']);
 
 Route::resource('/customers', App\Http\Controllers\CustomerController::class); 
 Route::get('/api/customers', [App\Http\Controllers\CustomerController::class, 'api']);

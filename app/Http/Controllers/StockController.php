@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Supplier;
 use App\Models\Item;
+use Carbon\Carbon;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 
@@ -20,16 +21,30 @@ class StockController extends Controller
      */
     public function index()
     {
+
+        $now = Carbon::now();
+        $thBln = $now->year.$now->month;
+        
+        $cek = Stock::count();
+        if ($cek == 0) {
+            $urut = 1001;
+            $nomor = 'PO'.$thBln.$urut;
+        }else {
+            $ambil = Stock::all()->last();
+            $urut = (int)substr($ambil->purchase_order, -4) + 1;
+            $nomor = 'PO'.$thBln.$urut;
+        }
+
         $stocks = Stock::all();
         $suppliers = Supplier::all();
         $items = Item::all();
-        return view('admin.stock.index',compact('items','suppliers','stocks'));
+        return view('admin.stock.index',compact('items','suppliers','stocks','nomor'));
     }
 
     public function api(Request $request) 
     {
 
-        $stocks = Stock::select('stocks.*', 'items.name as name_item','barcode','suppliers.name')
+        $stocks = Stock::select('stocks.*', 'items.name as name_item','suppliers.name')
                         ->join('items', 'stocks.item_id','items.id')
                         ->join('suppliers', 'stocks.supplier_id','suppliers.id')
                         ->get();
@@ -88,7 +103,8 @@ class StockController extends Controller
             'type' => ['required'],
             'description' => ['required'],
             'supplier_id' => ['nullable'],
-            'qty' => ['required']
+            'qty' => ['required'],
+            'purchase_order' => ['required']
         ]);
         Stock::create($request->all());
 

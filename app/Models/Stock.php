@@ -17,7 +17,8 @@ class Stock extends Model
         'type',
         'description',
         'supplier_id',
-        'qty' 
+        'qty',
+        'purchase_order'
     ];
 
 }

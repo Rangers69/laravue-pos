@@ -21,6 +21,7 @@
                     <thead>
                         <tr>
                             <th style="width: 5%">#</th>
+                            <th style="width: 20%">Sales Order</th>
                             <th style="width: 20%">Name</th>
                             <th style="width: 20%">Date</th>
                             <th style="width: 25%">Action</th>
@@ -29,6 +30,7 @@
                     @foreach($transactions as $key => $transaction)
                     <tr>
                         <td>{{$key+1}}</td>
+                        <td>{{$transaction->sales_order}}</td>
                         <td>{{$transaction->name}}</td>
                         <td>{{$transaction->created_at}}</td>
                         <td>

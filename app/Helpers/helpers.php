@@ -2,7 +2,7 @@
 
 
     function convertDate($value){
-        return date('d M Y - H:i:s', strtotime($value));
+        return date('d M Y', strtotime($value));
     }
 
     function format_uang($angka){

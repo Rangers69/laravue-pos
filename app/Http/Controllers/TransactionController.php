@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Item;
+use Carbon\Carbon;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 
@@ -20,6 +22,7 @@ class TransactionController extends Controller
      */
     public function index()
     {
+        
         $transactions = Transaction::select('transactions.*', 'customers.name')
         ->leftjoin('customers', 'transactions.customer_id','customers.id')
         ->get();
@@ -55,8 +58,20 @@ class TransactionController extends Controller
      */
     public function create()
     {
+        $now = Carbon::now();
+        $thBln = $now->year.$now->month;
+        
+        $cek = Transaction::count();
+        if ($cek == 0) {
+            $urut = 1001;
+            $nomor = 'SO'.$thBln.$urut;
+        }else {
+            $ambil = Transaction::all()->last();
+            $urut = (int)substr($ambil->sales_order, -4) + 1;
+            $nomor = 'SO'.$thBln.$urut;
+        }
         $customers = Customer::all();
-        return view('admin.transaction.create',compact('customers'));
+        return view('admin.transaction.create',compact('customers','nomor'));
     }
 
     /**
@@ -69,6 +84,7 @@ class TransactionController extends Controller
     {
         $this->validate($request,[
             'customer_id' => ['required'],
+            'sales_order' => ['required'],
         ]);
 
         Transaction::create($request->all());

@@ -12,7 +12,8 @@ class Transaction extends Model
 
     protected $fillable = 
     [
-        'customer_id'
+        'customer_id',
+        'sales_order'
     ];
 
     public function customers(): BelongsTo
