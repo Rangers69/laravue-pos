@@ -15,7 +15,7 @@
     <!-- form start -->
     <form class="form-horizontal" action="{{ url('transactionDetails') }}" method="post">
         @csrf
-        <div class="card-body" id="hitung">
+        <div class="card-body">
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Nama Produk</label>
                 <div class="col-sm-10">
@@ -28,7 +28,7 @@
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Qty</label>
                 <div class="col-sm-10">
-                    <input type="text" name="qty" id="qty" class="form-control" autocomplete="off">
+                    <input type="number" name="qty" id="qty" class="form-control" autocomplete="off">
                 </div>
             </div>
             <div class="form-group row">
@@ -100,10 +100,42 @@
                                     <td class="text-center"><strong>Rp {{@format_uang($total)}},-</strong></td>
                                     <td></td>
                                 </tr>
+                                <tr>
+                                    <td colspan="4"><strong>Diskon:</strong></td>
+                                    <?php
+                                    use Illuminate\Support\Str; 
+                                    if($total >= 2000000) {
+                                    $discount = $total/100 * 25;
+                                    $dis = "25%";
+                                    } elseif ($total >=1000000) {
+                                    $discount = $total/100 * 25;
+                                    $dis = "15%";
+                                    } else {
+                                        $discount = $total/100 * 15;
+                                        $dis = "15%";
+                                    }
+
+                                    $total_bayar = $total - $discount;
+                                  $total_midtrans=  Str::substr($total_bayar, 0, -3);
+                                    ?>
+                                    <td class="text-center"><strong>{{$dis}}<br>{{"- Rp ".@format_uang($discount)}},-</strong></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"><strong>Total Bayar:</strong></td>
+                                    <td class="text-center"><strong>Rp {{@format_uang($total_bayar)}},-</strong></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"></td>
+                                    <td> <button type="submit" id="pay" class="btn btn-success">Bayar</button></td>
+                                </tr>
                             </div>
                         </div>
                     </tbody>
                 </table>
+                <div class="float-right mr-5">
+                </div>
             </div>
             <!-- /.card-body -->
         </div>
@@ -117,8 +149,27 @@
 @section('js')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<!-- Key Midtrans -->
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-S92WPmjAuJaARJin"></script>
 
-
+<?php
+// Set your Merchant Server Key
+\Midtrans\Config::$serverKey = 'SB-Mid-server-JpF4nsP97oaxhsFzCoagiVUG';
+// Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+\Midtrans\Config::$isProduction = false;
+// Set sanitization on (default)
+\Midtrans\Config::$isSanitized = true;
+// Set 3DS transaction for credit card to true
+\Midtrans\Config::$is3ds = true;
+$params = array(
+    'transaction_details' => array(
+        'order_id' => rand(),
+        'gross_amount' => $total_midtrans,
+    )
+);
+$data_db=json_encode($params);
+$snapToken = \Midtrans\Snap::getSnapToken($params);
+?>
 <script type="text/javascript">
 
    // CSRF Token
@@ -147,6 +198,44 @@
           return false;
         }
      });
+
+     $( "#pay" ).click(function() {
+        var data = <?=$data_db?>;
+
+        $.ajax({
+             url:"{{url('/payment')}}",
+             type: "POST",
+             dataType: "json",
+             data: {
+                data: data,
+                _token: '{{ csrf_token() }}'
+             },
+             success: function( data ) {
+                console.log(data);
+             },
+             error: function (textStatus, errorThrown) {
+                console.log(data.trxtStatus);
+             }
+           });
+
+        snap.pay('<?=$snapToken?>', {
+          // Optional
+          onSuccess: function(result){
+            /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+          },
+          // Optional
+          onPending: function(result){
+           console.log('Silahkan Lakukan Pembayaran');
+          },
+          // Optional
+          onError: function(result){
+            /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+          }
+        });
+        });
+     
+
+        
 
    });
 

@@ -9,23 +9,29 @@
 @section('content')
 <div class="card card-info">
     <div class="card-header">
-        <h3 class="card-title">Customer Order</h3>
+        <h3 class="card-title">Sales Order</h3>
     </div>
     <!-- /.card-header -->
     <!-- form start -->
     <form class="form-horizontal" action="{{ url('transactions') }}" method="post">
     @csrf
         <div class="card-body">
+        <div class="form-group row">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">Sales Order</label>
+                    <div class="col-sm-10">
+                    <input type="text" name="sales_order" class="form-control" value="{{$nomor}}" readonly>
+                    </div>
+            </div>
             <div class="form-group row">
                 <label for="inputEmail3" class="col-sm-2 col-form-label">Kasir</label>
                 <div class="col-sm-10">
                     <input type="email" class="form-control" id="inputEmail3" value="{{ auth()->user()->name }}" readonly>
                 </div>
             </div>
-                <div class="form-group row">
+            <div class="form-group row">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Customer</label>
                     <div class="col-sm-10">
-                    <input type="text" name="name" class="form-control" id="customer"
+                        <input type="text" name="name" class="form-control" id="customer"
                         placeholder="Masukan nama Customer" autocomplete="off">
                         <input type="hidden" name="customer_id" id="customer_id">
                     </div>
