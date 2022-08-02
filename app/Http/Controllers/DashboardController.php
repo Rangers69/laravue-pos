@@ -21,23 +21,21 @@ class DashboardController extends Controller
 
     public function index()
     {
-        
+        //grafik donut for besitem
         $label_laku = Item::orderBy('item_id')->join('transaction_details', 'transaction_details.item_id', 'items.id')->groupBy('items.name')->limit(5)->pluck('items.name');
-
         $data_laku = TransactionDetail::select(DB::raw("SUM(qty) as total"))->groupBy('item_id')->limit(5)->orderBy('item_id')->pluck('total');
 
-        // return $data_laku;
         
-
         $all_categories = Category::count();
         $all_suppliers = Supplier::count();
         $all_customers = Customer::count();
         $all_items = Item::count();
-        
-        
+
+        //grafik donut for category
         $label_donut = Category::orderBy('category_id')->join('items', 'items.category_id', 'categories.id')->groupBy('categories.name')->pluck('categories.name');
         $data_donut = Item::select(DB::raw("COUNT(category_id) as total"))->groupBy('category_id')->orderBy('category_id')->pluck('total');
 
+        //grafik bar transaction
         $label_bar = ['Transactions'];
         $data_bar = [];
 
@@ -49,7 +47,6 @@ class DashboardController extends Controller
             foreach (range(1, 12) as $month) {
                 $data_month[] = Transaction::select(DB::raw("COUNT(*) as total"))->whereMonth('created_at', $month)->first()->total;
             }
-
             $data_bar[$key]['data'] = $data_month;
         }
 
